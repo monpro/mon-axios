@@ -1,10 +1,10 @@
-import { AxiosRequestConfig } from './types/index'
+import { AxiosRequestConfig, AxiosPromise } from './types/index'
 import { buildUrl } from './helpers/url'
 import xhr from './xhr'
 
-function axios(config: AxiosRequestConfig) {
+function axios(config: AxiosRequestConfig): AxiosPromise {
   processConfig(config)
-  xhr(config)
+  return xhr(config)
 }
 
 function processConfig(config: AxiosRequestConfig): void {

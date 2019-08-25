@@ -15,6 +15,7 @@ export function buildUrl(url: string, params?: any) {
   if (!params) {
     return url
   }
+
   const parts: string[] = []
 
   Object.keys(params).forEach(key => {
@@ -29,14 +30,13 @@ export function buildUrl(url: string, params?: any) {
     } else {
       values = [val]
     }
-
     values.forEach(val => {
       if (isDate(val)) {
         val = val.toISOString()
       } else if (isObject(val)) {
         val = JSON.stringify(val)
       }
-      parts.push(`${encode(key)} = ${encode(val)}`)
+      parts.push(`${encode(key)}=${encode(val)}`)
     })
   })
 
@@ -47,6 +47,7 @@ export function buildUrl(url: string, params?: any) {
     if (markIndex !== -1) {
       url = url.slice(0, markIndex)
     }
+
     url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams
   }
 
