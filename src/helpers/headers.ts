@@ -25,3 +25,23 @@ export function processHeaders(headers: any, data: any): any {
   }
   return headers
 }
+
+export function parseHeadersInResponse(headers: string): object {
+  let headersInResponse = Object.create(null)
+  if (!headers) {
+    return headersInResponse
+  }
+  headers.split('\r\n').forEach(header => {
+    let [key, val] = header.split(':')
+    key = key.trim().toLowerCase()
+    if (!key) {
+      return
+    }
+    if (val) {
+      val = val.trim()
+    }
+    headersInResponse[key] = val
+  })
+
+  return headersInResponse
+}
