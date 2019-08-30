@@ -8,8 +8,7 @@ axios({
   }
 })
 
-axios.request({
-  url: '/extend/post',
+axios('/extend/post', {
   method: 'post',
   data: {
     msg: 'hello'
