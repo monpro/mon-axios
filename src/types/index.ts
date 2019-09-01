@@ -6,6 +6,7 @@ export interface AxiosRequestConfig {
   params?: any
   headers?: any
   responseType?: XMLHttpRequestResponseType
+  [propName: string]: any
 }
 
 export type Method =

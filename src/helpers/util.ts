@@ -18,3 +18,7 @@ export function extend<T, U>(to: T, from: U): T & U {
   }
   return to as T & U
 }
+
+export function deepMerge(...objects: any[]): any {
+  return null
+}
