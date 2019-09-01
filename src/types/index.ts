@@ -74,6 +74,7 @@ export interface Axios {
 }
 
 export interface AxiosInstance extends Axios {
+  interceptors: any
   <T = any>(config: AxiosRequestConfig): AxiosPromise<T>
   <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 }
