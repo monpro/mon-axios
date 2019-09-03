@@ -13,7 +13,7 @@ function fromVal2Strat(val1: any, val2: any): any {
   }
 }
 
-const stratKeysFromVal2 = ['url', 'params', 'data']
+const stratKeysFromVal2: string[] = ['url', 'params', 'data']
 
 stratKeysFromVal2.forEach(key => {
   strats[key] = fromVal2Strat
