@@ -7,6 +7,12 @@ export interface AxiosRequestConfig {
   headers?: any
   responseType?: XMLHttpRequestResponseType
   [propName: string]: any
+  transformRequest?: AxiosTransformer | AxiosTransformer[]
+  transformResponse?: AxiosTransformer | AxiosTransformer[]
+}
+
+export interface AxiosTransformer {
+  (data: any, headers?: any): any
 }
 
 export type Method =
