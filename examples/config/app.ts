@@ -17,6 +17,7 @@ axios({
   console.log(res.data)
 })
 
+// tslint:disable-next-line: no-floating-promises
 axios({
   transformRequest: [(function(data) {
     return qs.stringify(data)
@@ -27,11 +28,11 @@ axios({
     }
     return data
   }],
-  url: '/config/post',
+  url: '/base/post',
   method: 'post',
-  data: {
+  data: qs.stringify({
     a: 1
-  }
+  })
 }).then((res) => {
   console.log(res.data)
 })
