@@ -9,7 +9,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       method = 'get',
       headers,
       responseType,
-      timeout
+      timeout,
+      cancelToken
     } = config
 
     const request = new XMLHttpRequest()
@@ -63,6 +64,14 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
           request
         )
       )
+    }
+
+    if (cancelToken) {
+      // tslint:disable-next-line: no-floating-promises
+      cancelToken.promise.then(reason => {
+        request.abort()
+        reject(reason)
+      })
     }
 
     function handleResponse(response: AxiosResponse) {
