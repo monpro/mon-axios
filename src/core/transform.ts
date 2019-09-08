@@ -12,8 +12,8 @@ export default function transform(
     toBeTransformed = [toBeTransformed]
   }
 
-  toBeTransformed.forEach(transform => {
-    data = transform(data, headers)
+  toBeTransformed.forEach(fn => {
+    data = fn(data, headers)
   })
 
   return data
