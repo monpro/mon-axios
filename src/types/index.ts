@@ -112,8 +112,8 @@ export interface AxiosStatic extends AxiosInstance {
 }
 
 export interface CancelToken {
-  promise: Promise<string>
-  reason?: string
+  promise: Promise<Cancel>
+  reason?: Cancel
 }
 
 export interface Canceler {
@@ -132,4 +132,19 @@ export interface CancelTokenSource {
 export interface CancelTokenStatic {
   new (exectutor: CancelExecutor): CancelToken
   source(): CancelTokenSource
+}
+
+export interface Cancel {
+  message?: string
+}
+
+export interface CancelStatic {
+  new (message?: string): Cancel
+}
+
+export interface AxiosStatic extends AxiosInstance {
+  create(config?: AxiosRequestConfig): AxiosInstance
+  CancelToken: CancelToken
+  Cancel: CancelStatic
+  isCancel: (value: any) => boolean
 }
