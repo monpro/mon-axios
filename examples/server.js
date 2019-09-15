@@ -119,6 +119,10 @@ router.get('/interceptor/get', function(req, res){
   res.json("hello")
 })
 
+router.get('/more/get', function(req, res) {
+  res.json(req.body)
+})
+
 app.use(router)
 
 
