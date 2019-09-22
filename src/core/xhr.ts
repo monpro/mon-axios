@@ -17,8 +17,14 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       xsrfCookieName,
       xsrfHeaderName,
       onDownloadProgress,
-      onUploadProgress
+      onUploadProgress,
+      auth
     } = config
+
+    if (auth) {
+      headers['Authorization'] =
+        'Basic ' + btoa(auth.username + ':' + auth.password)
+    }
 
     const request = new XMLHttpRequest()
 
