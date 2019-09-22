@@ -124,6 +124,13 @@ router.get('/more/get', function(req, res) {
   res.json(req.body)
 })
 
+app.use(express.static(__dirname, {
+  setHeaders (res) {
+    res.cookie('XSRF-TOKEN-D', '1234abc')
+  }
+}))
+
+
 app.use(router)
 
 
