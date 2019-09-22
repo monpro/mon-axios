@@ -13,6 +13,8 @@ export interface AxiosRequestConfig {
   withCredentials?: boolean
   xsrfCookieName?: string
   xsrfHeaderName?: string
+  onDownLoadProgress?: (e: ProgressEvent) => void
+  onUpLoadProgress?: (e: ProgressEvent) => void
 }
 
 export interface AxiosTransformer {
