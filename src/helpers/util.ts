@@ -1,5 +1,9 @@
 const toString = Object.prototype.toString
 
+export function isFormData(val: any): boolean {
+  return typeof val !== 'undefined' && val instanceof FormData
+}
+
 export function isDate(val: any): val is Date {
   return toString.call(val) === '[Object Date]'
 }
