@@ -1,29 +1,29 @@
 {
-  "name": "--libraryname--",
-  "version": "0.0.0",
+  "name": "ts-axios-new",
+  "version": "0.1.5",
   "description": "",
   "keywords": [],
-  "main": "dist/--libraryname--.umd.js",
-  "module": "dist/--libraryname--.es5.js",
-  "typings": "dist/types/--libraryname--.d.ts",
+  "main": "dist/axios.umd.js",
+  "module": "dist/axios.es5.js",
+  "typings": "dist/types/index.d.ts",
   "files": [
     "dist"
   ],
-  "author": "--username-- <--usermail-->",
+  "author": "ustbhuangyi <280309453@qq.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/ustbhuangyi/ts-axios"
   },
   "license": "MIT",
   "engines": {
     "node": ">=6.0.0"
   },
   "scripts": {
+    "dev": "node examples/server.js",
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
     "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src",
     "start": "rollup -c rollup.config.ts -w",
-    "dev": "node examples/server.js",
     "test": "jest --coverage",
     "test:watch": "jest --coverage --watch",
     "test:prod": "npm run lint && npm run test -- --no-cache",
@@ -33,8 +33,9 @@
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
     "precommit": "lint-staged",
-    "postinstall": "ts-node tools/init",
-    "travis-deploy-once": "travis-deploy-once"
+    "travis-deploy-once": "travis-deploy-once",
+    "prepub": "npm run test:prod && npm run build",
+    "pub": "sh release.sh"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
@@ -51,8 +52,8 @@
     "transform": {
       ".(ts|tsx)": "ts-jest"
     },
-    "testEnvironment": "node",
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "testEnvironment": "jsdom",
+    "testRegex": "/test/.*\\.(test|spec)\\.(ts)$",
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -71,7 +72,11 @@
       }
     },
     "collectCoverageFrom": [
-      "src/*.{js,ts}"
+      "src/*.{js,ts}",
+      "src/**/*.{js,ts}"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/test/boot.ts"
     ]
   },
   "prettier": {
@@ -86,20 +91,31 @@
   "devDependencies": {
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
-    "@types/jest": "^23.3.2",
+    "@types/jest": "^24.0.13",
     "@types/node": "^10.11.0",
+    "@types/nprogress": "0.0.29",
+    "@types/qs": "^6.5.3",
+    "@types/jasmine-ajax": "^3.1.39",
+    "atob": "^2.1.2",
+    "body-parser": "^1.18.3",
     "colors": "^1.3.2",
     "commitizen": "^3.0.0",
+    "connect-multiparty": "^2.2.0",
+    "cookie-parser": "^1.4.4",
     "coveralls": "^3.0.2",
     "cross-env": "^5.2.0",
+    "css-loader": "^2.1.1",
     "cz-conventional-changelog": "^2.1.0",
+    "express": "^4.16.4",
     "husky": "^1.0.1",
-    "jest": "^23.6.0",
-    "jest-config": "^23.6.0",
+    "jest": "^24.8.0",
+    "jest-config": "^24.8.0",
     "lint-staged": "^8.0.0",
     "lodash.camelcase": "^4.3.0",
+    "nprogress": "^0.2.0",
     "prettier": "^1.14.3",
     "prompt": "^1.0.0",
+    "qs": "^6.7.0",
     "replace-in-file": "^3.4.2",
     "rimraf": "^2.6.2",
     "rollup": "^0.67.0",
@@ -110,25 +126,21 @@
     "rollup-plugin-typescript2": "^0.18.0",
     "semantic-release": "^15.9.16",
     "shelljs": "^0.8.3",
+    "style-loader": "^0.23.1",
     "travis-deploy-once": "^5.0.9",
-    "ts-jest": "^23.10.2",
+    "ts-jest": "^24.0.2",
+    "ts-loader": "^5.3.3",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
     "tslint-config-standard": "^8.0.1",
-    "typedoc": "^0.12.0",
-    "typescript": "^3.0.3"
-  },
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "connect-multiparty": "^2.2.0",
-    "cookie-parser": "^1.4.4",
-    "express": "^4.17.1",
-    "nprogress": "^0.2.0",
-    "ts-loader": "^6.0.4",
     "tslint-loader": "^3.5.4",
-    "webpack": "^4.39.2",
-    "webpack-dev-middleware": "^3.7.0",
-    "webpack-hot-middleware": "^2.25.0"
+    "typedoc": "^0.12.0",
+    "typescript": "^3.4.5",
+    "webpack": "^4.28.4",
+    "webpack-dev-middleware": "^3.5.0",
+    "webpack-hot-middleware": "^2.24.3",
+    "jasmine-ajax": "^4.0.0",
+    "jasmine-core": "^3.4.0"
   }
 }
