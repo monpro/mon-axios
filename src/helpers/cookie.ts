@@ -1,4 +1,4 @@
-const cookie = {
+export const cookie = {
   read(name: string): string | null {
     const regex = '(^|;\\s*)(' + name + ')=([^;]*)'
     const match = document.cookie.match(new RegExp(regex))
