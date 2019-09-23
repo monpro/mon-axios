@@ -27,24 +27,23 @@ export function processHeaders(headers: any, data: any): any {
   return headers
 }
 
-export function parseHeadersInResponse(headers: string): object {
-  let headersInResponse = Object.create(null)
+export function parseHeaders(headers: string): any {
+  let parsed = Object.create(null)
   if (!headers) {
-    return headersInResponse
+    return parsed
   }
-  headers.split('\r\n').forEach(header => {
-    let [key, val] = header.split(':')
+
+  headers.split('\r\n').forEach(line => {
+    let [key, ...vals] = line.split(':')
     key = key.trim().toLowerCase()
     if (!key) {
       return
     }
-    if (val) {
-      val = val.trim()
-    }
-    headersInResponse[key] = val
+    const val = vals.join(':').trim()
+    parsed[key] = val
   })
 
-  return headersInResponse
+  return parsed
 }
 
 export function flattenHeaders(headers: any, method: Method): any {
