@@ -3,18 +3,16 @@ import { AxiosTransformer } from '../types'
 export default function transform(
   data: any,
   headers: any,
-  toBeTransformed?: AxiosTransformer | AxiosTransformer[]
+  fns?: AxiosTransformer | AxiosTransformer[]
 ): any {
-  if (!toBeTransformed) {
+  if (!fns) {
     return data
   }
-  if (!Array.isArray(toBeTransformed)) {
-    toBeTransformed = [toBeTransformed]
+  if (!Array.isArray(fns)) {
+    fns = [fns]
   }
-
-  toBeTransformed.forEach(fn => {
+  fns.forEach(fn => {
     data = fn(data, headers)
   })
-
   return data
 }
