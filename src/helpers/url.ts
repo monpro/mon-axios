@@ -29,6 +29,7 @@ export function buildUrl(
 
   if (paramsSerializer) {
     serializedParams = paramsSerializer(params)
+    console.log(serializedParams)
   } else if (isURLSearchParams(params)) {
     serializedParams = params.toString()
   } else {
