@@ -51,34 +51,74 @@ document.cookie = 'a=b'
 //   console.log(e.message)
 // })
 
-axios.get('/more/get', {
-  params: new URLSearchParams('a=b&c=d')
-}).then(res => {
-  console.log(res)
-})
+// axios.get('/more/get', {
+//   params: new URLSearchParams('a=b&c=d')
+// }).then(res => {
+//   console.log(res)
+// })
 
-axios.get('/more/get', {
+// axios.get('/more/get', {
+//   params: {
+//     a: 1,
+//     b: 2,
+//     c: ['a', 'b', 'c']
+//   }
+// }).then(res => {
+//   console.log(res)
+// })
+
+// const instance = axios.create({
+//   paramsSerializer(params) {
+//     return qs.stringify(params, { arrayFormat: 'brackets' })
+//   }
+// })
+
+// instance.get('/more/get', {
+//   params: {
+//     a: 1,
+//     b: 2,
+//     c: ['a', 'b', 'c']
+//   }
+// }).then(res => {
+//   console.log(res)
+// })
+// const instance = axios.create({
+//   baseURL: 'http://localhost:8080'
+// })
+
+// instance.get('/more/get')
+
+// instance.get('http://localhost:8080/more/get')
+
+
+function getA() {
+  return axios.get('/more/A')
+}
+
+function getB() {
+  return axios.get('/more/B')
+}
+
+// axios.all([getA(), getB()])
+//   .then(axios.spread(function(resA, resB) {
+//     console.log(resA.data)
+//     console.log(resB.data)
+//   }))
+
+
+axios.all([getA(), getB()])
+  .then(([resA, resB]) => {
+    console.log(resA.data)
+    console.log(resB.data)
+  })
+
+const fakeConfig = {
+  baseURL: 'https://www.google.com/',
+  url: '/user/12345',
   params: {
-    a: 1,
-    b: 2,
-    c: ['a', 'b', 'c']
+    idClient: 1,
+    idTest: 2,
+    testString: 'sdf'
   }
-}).then(res => {
-  console.log(res)
-})
-
-const instance = axios.create({
-  paramsSerializer(params) {
-    return qs.stringify(params, { arrayFormat: 'brackets' })
-  }
-})
-
-instance.get('/more/get', {
-  params: {
-    a: 1,
-    b: 2,
-    c: ['a', 'b', 'c']
-  }
-}).then(res => {
-  console.log(res)
-})
+}
+console.log(axios.getUri(fakeConfig))
