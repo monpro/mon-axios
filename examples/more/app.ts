@@ -82,10 +82,43 @@ document.cookie = 'a=b'
 // }).then(res => {
 //   console.log(res)
 // })
-const instance = axios.create({
-  baseURL: 'http://localhost:8080'
-})
+// const instance = axios.create({
+//   baseURL: 'http://localhost:8080'
+// })
 
-instance.get('/more/get')
+// instance.get('/more/get')
 
-instance.get('http://localhost:8080/more/get')
+// instance.get('http://localhost:8080/more/get')
+
+
+function getA() {
+  return axios.get('/more/A')
+}
+
+function getB() {
+  return axios.get('/more/B')
+}
+
+// axios.all([getA(), getB()])
+//   .then(axios.spread(function(resA, resB) {
+//     console.log(resA.data)
+//     console.log(resB.data)
+//   }))
+
+
+axios.all([getA(), getB()])
+  .then(([resA, resB]) => {
+    console.log(resA.data)
+    console.log(resB.data)
+  })
+
+const fakeConfig = {
+  baseURL: 'https://www.google.com/',
+  url: '/user/12345',
+  params: {
+    idClient: 1,
+    idTest: 2,
+    testString: 'sdf'
+  }
+}
+console.log(axios.getUri(fakeConfig))
