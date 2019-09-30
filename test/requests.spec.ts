@@ -62,4 +62,63 @@ describe('requests', () => {
       done()
     }
   })
+
+  test('should reject when request timeout', done => {
+    let err: AxiosError
+
+    axios('/foo', {
+      timeout: 2000,
+      method: 'post'
+    }).catch(error => {
+      err = error
+    })
+
+    getAjaxRequest().then(request => {
+      // @ts-ignore
+      request.eventBus.trigger('timeout')
+
+      setTimeout(() => {
+        expect(err instanceof Error).toBeTruthy()
+        expect(err.message).toBe('Timeout of 2000 ms exceeded')
+        done()
+      }, 100)
+    })
+  })
+
+  test('should reject when validateStatus returns false', done => {
+    const resolveSpy = jest.fn((res: AxiosResponse) => {
+      return res
+    })
+
+    const rejectSpy = jest.fn((e: AxiosError) => {
+      return e
+    })
+
+    axios('/foo', {
+      validateStatus(status) {
+        return status !== 500
+      }
+    })
+      .then(resolveSpy)
+      .catch(rejectSpy)
+      .then(next)
+
+    getAjaxRequest().then(request => {
+      request.respondWith({
+        status: 500
+      })
+    })
+
+    function next(reason: AxiosError | AxiosResponse) {
+      expect(resolveSpy).not.toHaveBeenCalled()
+      expect(rejectSpy).toHaveBeenCalled()
+      expect(reason instanceof Error).toBeTruthy()
+      expect((reason as AxiosError).message).toBe(
+        'Request failed with status code 500'
+      )
+      expect((reason as AxiosError).response!.status).toBe(500)
+
+      done()
+    }
+  })
 })
