@@ -33,4 +33,33 @@ describe('requests', () => {
       })
     })
   })
+
+  test('should reject on network errors', done => {
+    const resolveSpy = jest.fn((res: AxiosResponse) => {
+      return res
+    })
+
+    const rejectSpy = jest.fn((e: AxiosError) => {
+      return e
+    })
+
+    jasmine.Ajax.uninstall()
+
+    axios('/foo')
+      .then(resolveSpy)
+      .catch(rejectSpy)
+      .then(next)
+
+    function next(reason: AxiosResponse | AxiosError) {
+      expect(resolveSpy).not.toHaveBeenCalled()
+      expect(rejectSpy).toHaveBeenCalled()
+      expect(reason instanceof Error).toBeTruthy()
+      expect((reason as AxiosError).message).toBe('Network Error')
+      expect(reason.request).toEqual(expect.any(XMLHttpRequest))
+
+      jasmine.Ajax.install()
+
+      done()
+    }
+  })
 })
