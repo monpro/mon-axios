@@ -121,4 +121,69 @@ describe('requests', () => {
       done()
     }
   })
+
+  test('should resolve returning validateStatus True value', done => {
+    const resolveFn = jest.fn((res: AxiosResponse) => {
+      return res
+    })
+
+    const rejectFn = jest.fn((e: AxiosError) => {
+      return e
+    })
+
+    axios('/foo', {
+      validateStatus(status) {
+        return status === 500
+      }
+    })
+      .then(resolveFn)
+      .catch(rejectFn)
+      .then(next)
+
+    getAjaxRequest().then(request => {
+      request.respondWith({
+        status: 500
+      })
+    })
+
+    function next(res: AxiosResponse | AxiosError) {
+      expect(resolveFn).toHaveBeenCalled()
+      expect(rejectFn).not.toHaveBeenCalled()
+      expect(res.config.url).toBe('/foo')
+
+      done()
+    }
+  })
+
+  test('should return JSON when resolved', done => {
+    let response: AxiosResponse
+
+    axios('/api/account/signup', {
+      auth: {
+        username: '',
+        password: ''
+      },
+      method: 'post',
+      headers: {
+        Accept: 'application/json'
+      }
+    })
+      .then(res => {
+        response = res
+      })
+      .catch(e => console.log(e))
+
+    getAjaxRequest().then(request => {
+      request.respondWith({
+        status: 200,
+        statusText: 'OK',
+        responseText: '{"a" : 1}'
+      })
+
+      setTimeout(() => {
+        expect(response.data).toEqual({ a: 1 })
+        done()
+      }, 100)
+    })
+  })
 })
