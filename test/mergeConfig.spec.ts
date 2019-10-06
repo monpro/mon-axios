@@ -52,5 +52,53 @@ describe('test for mergeConfig', () => {
     ).toEqual({
       headers: 'x-mock-header'
     })
+
+    expect(
+      mergeConfig(
+        {
+          auth: {
+            username: 'foo',
+            password: 'test'
+          }
+        },
+        {
+          auth: {
+            username: 'baz',
+            password: 'foobar'
+          }
+        }
+      )
+    ).toEqual({
+      auth: {
+        username: 'baz',
+        password: 'foobar'
+      }
+    })
+  })
+
+  test('should overwrite auth, headers with a non-object value', () => {
+    expect(
+      mergeConfig(
+        {
+          headers: {
+            common: {
+              Accept: 'application/json, text/plain, */*'
+            }
+          }
+        },
+        {
+          headers: null
+        }
+      )
+    ).toEqual({
+      headers: null
+    })
+  })
+
+  test('should allow setting other options', () => {
+    const merged = mergeConfig(defaults, {
+      timeout: 123
+    })
+    expect(merged.timeout).toBe(123)
   })
 })
