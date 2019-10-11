@@ -13,22 +13,6 @@ describe('cancel', () => {
     jasmine.Ajax.uninstall()
   })
 
-  describe('when called before sending request', () => {
-    test('should rejects Promise with a Cancel object', () => {
-      const source = CancelToken.source()
-      source.cancel('Operation has been canceled.')
-
-      return axios
-        .get('/foo', {
-          cancelToken: source.token
-        })
-        .catch(reason => {
-          expect(reason).toEqual(expect.any(Cancel))
-          expect(reason.message).toBe('Operation has been canceled.')
-        })
-    })
-  })
-
   describe('when called after request has been sent', () => {
     test('should rejects Promise with a Cancel object', done => {
       const source = CancelToken.source()
