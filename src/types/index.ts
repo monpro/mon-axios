@@ -161,7 +161,7 @@ export interface AxiosClassStatic {
 
 export interface AxiosStatic extends AxiosInstance {
   create(config?: AxiosRequestConfig): AxiosInstance
-  CancelToken: CancelToken
+  CancelToken: CancelTokenStatic
   Cancel: CancelStatic
   isCancel: (value: any) => boolean
   all<T>(promises: Array<T | Promise<T>>): Promise<T[]>
