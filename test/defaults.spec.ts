@@ -37,4 +37,33 @@ describe('defaults', () => {
       (axios.defaults.transformResponse as AxiosTransformer[])[0]('a=b')
     ).toBe('a=b')
   })
+
+  test('should use global defaults config', () => {
+    axios('/foo')
+
+    return getAjaxRequest().then(request => {
+      expect(request.url).toBe('/foo')
+    })
+  })
+
+  test('should use modified defaults config', () => {
+    axios.defaults.baseURL = 'http://example.com/'
+
+    axios('/foo')
+
+    return getAjaxRequest().then(request => {
+      expect(request.url).toBe('http://example.com/foo')
+      delete axios.defaults.baseURL
+    })
+  })
+
+  test('should use request config', () => {
+    axios('/foo', {
+      baseURL: 'http://www.example.com'
+    })
+
+    return getAjaxRequest().then(request => {
+      expect(request.url).toBe('http://www.example.com/foo')
+    })
+  })
 })
