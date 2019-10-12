@@ -74,4 +74,18 @@ describe('transform', () => {
       expect(request.params).toBe('{"foo":"baz"}')
     })
   })
+  test('should allowing mutating headers', () => {
+    const token = Math.floor(Math.random() * Math.pow(2, 64)).toString(36)
+
+    axios('/foo', {
+      transformRequest: (data, headers) => {
+        headers['X-Authorization'] = token
+        return data
+      }
+    })
+
+    return getAjaxRequest().then(request => {
+      expect(request.requestHeaders['X-Authorization']).toEqual(token)
+    })
+  })
 })
