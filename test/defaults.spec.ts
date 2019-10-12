@@ -66,4 +66,44 @@ describe('defaults', () => {
       expect(request.url).toBe('http://www.example.com/foo')
     })
   })
+
+  test('should use default config for custom instance', () => {
+    const instance = axios.create({
+      xsrfCookieName: 'CUSTOM-XSRF-TOKEN',
+      xsrfHeaderName: 'X-CUSTOM-XSRF-TOKEN'
+    })
+    document.cookie = instance.defaults.xsrfCookieName + '=foobarbaz'
+
+    instance.get('/foo')
+
+    return getAjaxRequest().then(request => {
+      expect(request.requestHeaders[instance.defaults.xsrfHeaderName!]).toBe(
+        'foobarbaz'
+      )
+      document.cookie =
+        instance.defaults.xsrfCookieName +
+        '=;expires=' +
+        new Date(Date.now() - 86400000).toUTCString()
+    })
+
+    test('should use GET headers', () => {
+      axios.defaults.headers.get['X-CUSTOM-HEADER'] = 'foo'
+      axios.get('/foo')
+
+      return getAjaxRequest().then(request => {
+        expect(request.requestHeaders['X-CUSTOM-HEADER']).toBe('foo')
+        delete axios.defaults.headers.get['X-CUSTOM-HEADER']
+      })
+    })
+
+    test('should use POST headers', () => {
+      axios.defaults.headers.post['X-CUSTOM-HEADER'] = 'foo'
+      axios.post('/foo', {})
+
+      return getAjaxRequest().then(request => {
+        expect(request.requestHeaders['X-CUSTOM-HEADER']).toBe('foo')
+        delete axios.defaults.headers.post['X-CUSTOM-HEADER']
+      })
+    })
+  })
 })
