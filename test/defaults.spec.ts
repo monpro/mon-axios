@@ -105,5 +105,62 @@ describe('defaults', () => {
         delete axios.defaults.headers.post['X-CUSTOM-HEADER']
       })
     })
+
+    test('should use header config', () => {
+      const instance = axios.create({
+        headers: {
+          common: {
+            'X-COMMON-HEADER': 'commonHeaderValue'
+          },
+          get: {
+            'X-GET-HEADER': 'getHeaderValue'
+          },
+          post: {
+            'X-POST-HEADER': 'postHeaderValue'
+          }
+        }
+      })
+
+      instance.get('/foo', {
+        headers: {
+          'X-FOO-HEADER': 'fooHeaderValue',
+          'X-BAR-HEADER': 'barHeaderValue'
+        }
+      })
+
+      return getAjaxRequest().then(request => {
+        expect(request.requestHeaders).toEqual(
+          deepMerge(axios.defaults.headers.common, axios.defaults.headers.get, {
+            'X-COMMON-HEADER': 'commonHeaderValue',
+            'X-GET-HEADER': 'getHeaderValue',
+            'X-FOO-HEADER': 'fooHeaderValue',
+            'X-BAR-HEADER': 'barHeaderValue'
+          })
+        )
+      })
+    })
+
+    test('should be used by custom instance if set before instance created', () => {
+      axios.defaults.baseURL = 'http://example.org/'
+      const instance = axios.create()
+
+      instance.get('/foo')
+
+      return getAjaxRequest().then(request => {
+        expect(request.url).toBe('http://example.org/foo')
+        delete axios.defaults.baseURL
+      })
+    })
+
+    test('should not be used by custom instance if set after instance created', () => {
+      const instance = axios.create()
+      axios.defaults.baseURL = 'http://example.org/'
+
+      instance.get('/foo')
+
+      return getAjaxRequest().then(request => {
+        expect(request.url).toBe('/foo')
+      })
+    })
   })
 })
