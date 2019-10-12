@@ -74,6 +74,7 @@ describe('transform', () => {
       expect(request.params).toBe('{"foo":"baz"}')
     })
   })
+
   test('should allowing mutating headers', () => {
     const token = Math.floor(Math.random() * Math.pow(2, 64)).toString(36)
 
